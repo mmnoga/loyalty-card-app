@@ -7,7 +7,7 @@ import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-import pl.careaboutit.backend.dtos.payu.PayUAuthResponseDto;
+import pl.careaboutit.backend.dto.payu.PayUAuthResponseDto;
 
 import java.io.IOException;
 
