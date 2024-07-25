@@ -1,4 +1,4 @@
-package pl.careaboutit.backend.config;
+package pl.careaboutit.backend.config.oauth;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

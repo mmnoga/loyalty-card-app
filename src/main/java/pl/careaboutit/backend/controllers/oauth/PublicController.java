@@ -1,4 +1,4 @@
-package pl.careaboutit.backend.controllers;
+package pl.careaboutit.backend.controllers.oauth;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

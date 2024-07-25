@@ -4,5 +4,9 @@ spring:
       resourceserver:
         opaquetoken:
           introspection-uri: https://www.googleapis.com
-          client-id: "860269733595-g2euiqi0hkh3tem74uk41bpcfeull7fn.apps.googleusercontent.com"
-          client-secret: "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"
+          client-id: ${GOOGLE_CLIENT_ID}
+          client-secret: ${GOOGLE_CLIENT_SECRET}
+
+custom-config:
+  google:
+    redirect-uri: http://localhost:4200
