@@ -1,4 +1,4 @@
-package pl.careaboutit.backend.dtos;
+package pl.careaboutit.backend.dtos.oauth;
 
 public record MessageDto(String message) {
 }

@@ -3,7 +3,7 @@ package pl.careaboutit.backend.controllers.oauth;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pl.careaboutit.backend.dtos.MessageDto;
+import pl.careaboutit.backend.dtos.oauth.MessageDto;
 
 @RestController
 public class PublicController {

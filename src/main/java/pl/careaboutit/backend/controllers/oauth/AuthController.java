@@ -11,8 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import pl.careaboutit.backend.dtos.TokenDto;
-import pl.careaboutit.backend.dtos.UrlDto;
+import pl.careaboutit.backend.dtos.oauth.TokenDto;
+import pl.careaboutit.backend.dtos.oauth.UrlDto;
 
 import java.io.IOException;
 import java.util.Arrays;

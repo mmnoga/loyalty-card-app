@@ -6,7 +6,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.security.oauth2.server.resource.introspection.OAuth2IntrospectionAuthenticatedPrincipal;
 import org.springframework.security.oauth2.server.resource.introspection.OpaqueTokenIntrospector;
 import org.springframework.web.reactive.function.client.WebClient;
-import pl.careaboutit.backend.dtos.UserInfo;
+import pl.careaboutit.backend.dtos.oauth.UserInfo;
 
 import java.util.HashMap;
 import java.util.Map;
