@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-@Table(name = "LoyaltyCard")
+@Table(name = "LoyaltyCards")
 public class LoyaltyCard {
 
     @Id
@@ -21,8 +21,8 @@ public class LoyaltyCard {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "status_id", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private CardStatus status;
 
     private LocalDateTime createdAt = LocalDateTime.now();

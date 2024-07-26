@@ -1,8 +1,8 @@
 package pl.careaboutit.backend.mapper.impl;
 
 import org.springframework.stereotype.Component;
-import pl.careaboutit.backend.dto.SignupUserDto;
-import pl.careaboutit.backend.dto.UserResponseDto;
+import pl.careaboutit.backend.dto.user.SignupUserDto;
+import pl.careaboutit.backend.dto.user.UserResponseDto;
 import pl.careaboutit.backend.mapper.UserMapper;
 import pl.careaboutit.backend.model.User;
 

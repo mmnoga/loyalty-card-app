@@ -2,8 +2,8 @@ package pl.careaboutit.backend.controller.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import pl.careaboutit.backend.dto.SignupUserDto;
-import pl.careaboutit.backend.dto.UserResponseDto;
+import pl.careaboutit.backend.dto.user.SignupUserDto;
+import pl.careaboutit.backend.dto.user.UserResponseDto;
 import pl.careaboutit.backend.service.user.UserService;
 
 @RestController

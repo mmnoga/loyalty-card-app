@@ -44,6 +44,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/payu/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/user/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/user/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/card/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/card/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/card/**").permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(customizer -> customizer
                         .opaqueToken(Customizer.withDefaults()));

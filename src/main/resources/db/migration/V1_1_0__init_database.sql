@@ -10,20 +10,14 @@ CREATE TABLE Users (
                        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TABLE CardStatus (
-                            id INT AUTO_INCREMENT PRIMARY KEY,
-                            status VARCHAR(50) NOT NULL
-);
-
 CREATE TABLE LoyaltyCards (
                               id BIGINT AUTO_INCREMENT PRIMARY KEY,
                               card_number VARCHAR(255) NOT NULL UNIQUE,
                               user_id BIGINT,
-                              status_id INT NOT NULL,
+                              status VARCHAR(50) NOT NULL,
                               created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                               updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                              FOREIGN KEY (user_id) REFERENCES Users(id),
-                              FOREIGN KEY (status_id) REFERENCES CardStatus(id)
+                              FOREIGN KEY (user_id) REFERENCES Users(id)
 );
 
 CREATE TABLE LoyaltyPoints (
@@ -34,6 +28,3 @@ CREATE TABLE LoyaltyPoints (
                                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                                FOREIGN KEY (card_id) REFERENCES LoyaltyCards(id)
 );
-
-INSERT INTO CardStatus (status) VALUES ('active');
-INSERT INTO CardStatus (status) VALUES ('inactive');

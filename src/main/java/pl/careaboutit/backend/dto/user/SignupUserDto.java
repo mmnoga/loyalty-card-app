@@ -1,4 +1,4 @@
-package pl.careaboutit.backend.dto;
+package pl.careaboutit.backend.dto.user;
 
 public record SignupUserDto(
 

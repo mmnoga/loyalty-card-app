@@ -1,7 +1,7 @@
 package pl.careaboutit.backend.service.user;
 
-import pl.careaboutit.backend.dto.SignupUserDto;
-import pl.careaboutit.backend.dto.UserResponseDto;
+import pl.careaboutit.backend.dto.user.SignupUserDto;
+import pl.careaboutit.backend.dto.user.UserResponseDto;
 
 public interface UserService {
 
