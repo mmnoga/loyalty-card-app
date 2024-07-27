@@ -4,14 +4,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.careaboutit.backend.dto.LoginRequestDto;
 import pl.careaboutit.backend.dto.user.SignupUserDto;
 import pl.careaboutit.backend.dto.user.UserResponseDto;
 import pl.careaboutit.backend.exception.BusinessException;
 import pl.careaboutit.backend.mapper.UserMapper;
-import pl.careaboutit.backend.model.Role;
+import pl.careaboutit.backend.model.AuthProvider;
 import pl.careaboutit.backend.model.User;
 import pl.careaboutit.backend.repository.UserRepository;
 import pl.careaboutit.backend.service.user.UserService;
+
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -33,8 +36,8 @@ public class UserServiceImpl implements UserService {
 
         String encodedPassword = passwordEncoder.encode(newUser.getPassword());
         newUser.setPassword(encodedPassword);
-
-        newUser.setRole(Role.USER);
+        newUser.setRoles(Set.of("USER"));
+        newUser.setAuthProvider(AuthProvider.LOCAL);
 
         User savedUser = userRepository.save(newUser);
 
@@ -48,6 +51,21 @@ public class UserServiceImpl implements UserService {
                         "User with email: " + email + " not found",
                         HttpStatus.BAD_REQUEST
                 ));
+
+        return userMapper.mapUserToUserResponseDto(user);
+    }
+
+    @Override
+    public UserResponseDto loginUser(LoginRequestDto loginRequest) {
+        User user = userRepository.findByEmail(loginRequest.email())
+                .orElseThrow(() -> new BusinessException(
+                        "User with email: " + loginRequest.email() + " not found",
+                        HttpStatus.BAD_REQUEST
+                ));
+
+        if (!passwordEncoder.matches(loginRequest.password(), user.getPassword())) {
+            throw new BusinessException("Invalid password", HttpStatus.UNAUTHORIZED);
+        }
 
         return userMapper.mapUserToUserResponseDto(user);
     }

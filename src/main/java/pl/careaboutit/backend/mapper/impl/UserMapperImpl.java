@@ -6,6 +6,9 @@ import pl.careaboutit.backend.dto.user.UserResponseDto;
 import pl.careaboutit.backend.mapper.UserMapper;
 import pl.careaboutit.backend.model.User;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Component
 public class UserMapperImpl implements UserMapper {
 
@@ -17,7 +20,14 @@ public class UserMapperImpl implements UserMapper {
         user.setFirstName(signupUserDto.firstName());
         user.setLastName(signupUserDto.lastName());
         user.setPassword(signupUserDto.password());
-        user.setPhone(signupUserDto.phone());
+        signupUserDto.phone().ifPresent(user::setPhone);
+        user.setAuthProvider(signupUserDto.authProvider());
+
+        if (signupUserDto.roles() != null && !signupUserDto.roles().isEmpty()) {
+            user.setRoles(new HashSet<>(signupUserDto.roles()));
+        } else {
+            user.setRoles(Set.of("USER"));
+        }
 
         return user;
     }
@@ -33,7 +43,8 @@ public class UserMapperImpl implements UserMapper {
                 user.getFirstName(),
                 user.getLastName(),
                 user.getPhone(),
-                user.getRole().name()
+                user.getAuthProvider(),
+                user.getRoles()
         );
     }
 
