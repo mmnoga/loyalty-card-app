@@ -26,7 +26,7 @@ spring:
     clean-disabled: false
 
 app:
-  jwtSecret: your_base64_encoded_jwt_secret_key
+  jwtSecret: ${JWT_SECRET_KEY}
   jwtExpirationInMs: 86400000
 
 custom-config:

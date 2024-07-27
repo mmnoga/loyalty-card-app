@@ -31,6 +31,10 @@
         <mysql.version>9.0.0</mysql.version>
         <flyway.version>10.16.0</flyway.version>
         <google-api-client.version>2.2.0</google-api-client.version>
+        <jackson2>1.20.0</jackson2>
+        <jjwt-api>0.12.6</jjwt-api>
+        <jjwt-impl>0.12.6</jjwt-impl>
+        <jjwt-jackson>0.12.6</jjwt-jackson>
     </properties>
     <dependencies>
         <dependency>
@@ -76,23 +80,23 @@
         <dependency>
             <groupId>com.google.api-client</groupId>
             <artifactId>google-api-client-jackson2</artifactId>
-            <version>1.20.0</version>
+            <version>${jackson2}</version>
         </dependency>
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
-            <version>0.12.6</version>
+            <version>${jjwt-api}</version>
         </dependency>
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-impl</artifactId>
-            <version>0.12.6</version>
+            <version>${jjwt-impl}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-jackson</artifactId>
-            <version>0.12.6</version>
+            <version>${jjwt-jackson}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
