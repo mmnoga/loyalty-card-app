@@ -41,9 +41,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/user/register", "/user/login", "/user/logout").permitAll()
                         .requestMatchers("/", "/auth/**", "/public/**").permitAll()
-                        .requestMatchers("/ws/notifications/**").authenticated()
-                        .requestMatchers("/notifications/**").authenticated()
-                        .requestMatchers("/test").authenticated()
+                        .requestMatchers("/ws/**").permitAll()
+                        .requestMatchers("/chat-socket/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/exchange-token").permitAll()
                         .requestMatchers(HttpMethod.GET, "/payu/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/payu/**").permitAll()
@@ -53,10 +52,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/card/**").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/card/**").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/card/**").permitAll()
-                        .anyRequest().authenticated())
+                        .anyRequest().authenticated());
                 //.oauth2ResourceServer(customizer -> customizer
                 //        .opaqueToken(Customizer.withDefaults()))
-                .httpBasic(Customizer.withDefaults());
+                //.httpBasic(Customizer.withDefaults());
 
         return http.build();
     }
