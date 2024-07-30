@@ -1,25 +1,26 @@
 package pl.careaboutit.backend.controller.oauth;
 
-import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeRequestUrl;
-import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeTokenRequest;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.gson.GsonFactory;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import pl.careaboutit.backend.auth.GoogleTokenVerifier;
+import pl.careaboutit.backend.auth.JwtTokenProvider;
+import pl.careaboutit.backend.dto.oauth.EmailCheckResponseDto;
 import pl.careaboutit.backend.dto.oauth.TokenDto;
 import pl.careaboutit.backend.dto.oauth.UrlDto;
+import pl.careaboutit.backend.service.oauth.OAuthService;
+import pl.careaboutit.backend.service.user.UserService;
 
-import java.io.IOException;
-import java.util.Arrays;
+import java.util.Map;
 
 @RestController
+@RequiredArgsConstructor
 @Slf4j
 public class AuthController {
+
+    private final OAuthService authService;
 
     @Value("${spring.security.oauth2.resourceserver.opaquetoken.client-id}")
     private String clientId;
@@ -30,38 +31,31 @@ public class AuthController {
     @Value("${custom-config.google.redirect-uri}")
     private String redirectUri;
 
+    private final GoogleTokenVerifier googleTokenVerifier;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final UserService userService;
+
     @GetMapping("/auth/url")
     public ResponseEntity<UrlDto> getAuthUrl() {
-        String url = new GoogleAuthorizationCodeRequestUrl(
-                clientId,
-                redirectUri,
-                Arrays.asList("email", "profile", "openid")
-        ).build();
-
-        log.info("Auth URL {}", url);
-
-        return ResponseEntity.ok(new UrlDto(url));
+        return ResponseEntity.ok(authService.getAuthUrl());
     }
 
-    @GetMapping("/auth/callback")
-    public ResponseEntity<TokenDto> callback(@RequestParam("code") String code) {
-        String token;
-        try {
-            token = new GoogleAuthorizationCodeTokenRequest(
-                    new NetHttpTransport(), new GsonFactory(),
-                    clientId,
-                    clientSecret,
-                    code,
-                    redirectUri
-            ).execute().getAccessToken();
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
+    @PostMapping("/auth/callback")
+    public ResponseEntity<TokenDto> callback(
+            @RequestBody Map<String, String> requestBody) {
+        return ResponseEntity.ok(authService.callback(requestBody));
+    }
 
-        log.debug("Token: {}", token);
+    @GetMapping("/auth/check-email")
+    public ResponseEntity<EmailCheckResponseDto> checkEmail(
+            @RequestParam("email") String email) {
+        return ResponseEntity.ok(authService.checkEmail(email));
+    }
 
-        return ResponseEntity.ok(new TokenDto(token));
+    @PostMapping("/exchange-token")
+    public ResponseEntity<TokenDto> exchangeToken(
+            @RequestBody TokenDto googleTokenDto) {
+        return ResponseEntity.ok(authService.exchangeToken(googleTokenDto));
     }
 
 }

@@ -1,12 +1,20 @@
 package pl.careaboutit.backend.dto.payu;
 
-public record Buyer(
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-        String email,
-        String phone,
-        String firstName,
-        String lastName,
-        String language
+@Data
+@NoArgsConstructor
+@Builder
+@AllArgsConstructor
+public class Buyer {
 
-) {
+    String email;
+    String phone;
+    String firstName;
+    String lastName;
+    String language;
+
 }

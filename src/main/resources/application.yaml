@@ -33,6 +33,10 @@ custom-config:
   google:
     redirect-uri: http://localhost:4200/callback
 
+frontend:
+  redirect:
+    url: http://localhost:4200
+
 payu:
   client-id: ${PAYU_CLIENT_ID}
   client-secret: ${PAYU_CLIENT_SECRET}

@@ -2,7 +2,6 @@ package pl.careaboutit.backend.controller.payu;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pl.careaboutit.backend.dto.payu.OrderRequestDto;
 import pl.careaboutit.backend.dto.payu.OrderResponseDto;
@@ -23,7 +22,6 @@ public class PayUController {
     }
 
     @PostMapping("/orders")
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<OrderResponseDto> submitOrder(
             @RequestBody OrderRequestDto order) {
         return ResponseEntity.ok(payUService.

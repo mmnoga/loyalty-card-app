@@ -36,7 +36,7 @@ public class LoyaltyCardServiceImpl implements LoyaltyCardService {
         LoyaltyCard card =
                 loyaltyCardRepository.findByCardNumber(cardNumber)
                         .orElseThrow(() -> new BusinessException(
-                "User with email: " + cardNumber + " not found",
+                "Card " + cardNumber + " not found",
                 HttpStatus.BAD_REQUEST
         ));
 

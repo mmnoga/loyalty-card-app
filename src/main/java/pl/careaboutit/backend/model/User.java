@@ -2,6 +2,8 @@ package pl.careaboutit.backend.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,7 +15,7 @@ import java.util.Set;
 
 @Entity
 @Data
-@Table(name = "Users")
+@Table(name = "users")
 public class User implements UserDetails {
 
     @Id
@@ -39,10 +41,14 @@ public class User implements UserDetails {
     private Set<String> roles = new HashSet<>();
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private AuthProvider authProvider;
 
-    private LocalDateTime createdAt = LocalDateTime.now();
-    private LocalDateTime updatedAt = LocalDateTime.now();
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

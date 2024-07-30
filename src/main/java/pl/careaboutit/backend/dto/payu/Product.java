@@ -1,10 +1,18 @@
 package pl.careaboutit.backend.dto.payu;
 
-public record Product(
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-        String name,
-        String unitPrice,
-        String quantity
+@Data
+@NoArgsConstructor
+@Builder
+@AllArgsConstructor
+public class Product {
 
-) {
+    String name;
+    String unitPrice;
+    String quantity;
+
 }

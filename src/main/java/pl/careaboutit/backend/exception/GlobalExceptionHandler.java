@@ -16,6 +16,11 @@ public class GlobalExceptionHandler {
         return createErrorResponse(ex.getMessage(), ex.getStatus());
     }
 
+    @ExceptionHandler(TechnicalException.class)
+    public ResponseEntity<Map<String, String>> handleTechnicalException(BusinessException ex) {
+        return createErrorResponse(ex.getMessage(), ex.getStatus());
+    }
+
     private ResponseEntity<Map<String, String>> createErrorResponse(String errorMessage, HttpStatus status) {
         Map<String, String> errorResponse = new HashMap<>();
         errorResponse.put("message", errorMessage);

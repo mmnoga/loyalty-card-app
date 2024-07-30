@@ -6,6 +6,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.security.oauth2.server.resource.introspection.OAuth2IntrospectionAuthenticatedPrincipal;
 import org.springframework.security.oauth2.server.resource.introspection.OpaqueTokenIntrospector;
 import org.springframework.web.reactive.function.client.WebClient;
+import pl.careaboutit.backend.auth.JwtTokenProvider;
 import pl.careaboutit.backend.dto.oauth.UserInfo;
 
 import java.util.HashMap;
@@ -16,10 +17,15 @@ import java.util.Map;
 public class GoogleOpaqueTokenIntrospector implements OpaqueTokenIntrospector {
 
     private final WebClient userInfoClient;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Override
     public OAuth2AuthenticatedPrincipal introspect(String token) {
         log.info("Token: {}", token);
+
+        if (isJwtToken(token)) {
+            return jwtTokenProvider.parseJwtToken(token);
+        }
 
         UserInfo userInfo = userInfoClient.get()
                 .uri(uriBuilder -> uriBuilder
@@ -38,4 +44,9 @@ public class GoogleOpaqueTokenIntrospector implements OpaqueTokenIntrospector {
 
         return new OAuth2IntrospectionAuthenticatedPrincipal(userInfo.name(), attributes, null);
     }
+
+    private boolean isJwtToken(String token) {
+        return token.startsWith("ey");
+    }
+
 }

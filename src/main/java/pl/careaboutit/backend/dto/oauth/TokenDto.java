@@ -2,7 +2,8 @@ package pl.careaboutit.backend.dto.oauth;
 
 public record TokenDto(
 
-        String token
+        String token,
+        String email
 
 ) {
 }

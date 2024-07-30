@@ -9,9 +9,9 @@ public record UserResponseDto(
         String email,
         String firstName,
         String lastName,
-        String phone,
         AuthProvider authProvider,
-        Set<String> roles
+        Set<String> roles,
+        String token
 
 ) {
 }

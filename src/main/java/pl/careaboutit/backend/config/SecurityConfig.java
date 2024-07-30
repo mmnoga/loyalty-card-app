@@ -17,6 +17,7 @@ import org.springframework.security.oauth2.server.resource.introspection.OpaqueT
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.web.reactive.function.client.WebClient;
+import pl.careaboutit.backend.auth.JwtTokenProvider;
 import pl.careaboutit.backend.config.oauth.GoogleOpaqueTokenIntrospector;
 
 @Configuration
@@ -26,6 +27,7 @@ import pl.careaboutit.backend.config.oauth.GoogleOpaqueTokenIntrospector;
 public class SecurityConfig {
 
     private final WebClient userInfoClient;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -37,26 +39,30 @@ public class SecurityConfig {
                 .sessionManagement(customizer -> customizer
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/user/register", "/user/login", "/user/logout").permitAll()
                         .requestMatchers("/", "/auth/**", "/public/**").permitAll()
-                        .requestMatchers("/ws/notifications").permitAll()
-                        .requestMatchers("/notifications/**").permitAll()
+                        .requestMatchers("/ws/notifications/**").authenticated()
+                        .requestMatchers("/notifications/**").authenticated()
+                        .requestMatchers("/test").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/exchange-token").permitAll()
                         .requestMatchers(HttpMethod.GET, "/payu/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/payu/**").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/payu/**").permitAll()
-                        .requestMatchers("/user/register","/user/login").permitAll()
                         .requestMatchers("/google/user").authenticated()
                         .requestMatchers(HttpMethod.GET, "/card/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/card/**").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/card/**").permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(customizer -> customizer
-                        .opaqueToken(Customizer.withDefaults()));
+                        .opaqueToken(Customizer.withDefaults()))
+                .httpBasic(Customizer.withDefaults());
 
         return http.build();
     }
 
     @Bean
     public OpaqueTokenIntrospector introspector() {
-        return new GoogleOpaqueTokenIntrospector(userInfoClient);
+        return new GoogleOpaqueTokenIntrospector(userInfoClient, jwtTokenProvider);
     }
 
     @Bean

@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS session_tokens (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    token VARCHAR(500) NOT NULL,
+    user_email VARCHAR(100) NOT NULL,
+    issued_at TIMESTAMP NOT NULL,
+    expiration TIMESTAMP NOT NULL
+);

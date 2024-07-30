@@ -2,12 +2,14 @@ package pl.careaboutit.backend.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Data
-@Table(name = "LoyaltyCards")
+@Table(name = "loyalty_cards")
 public class LoyaltyCard {
 
     @Id
@@ -25,7 +27,10 @@ public class LoyaltyCard {
     @Column(nullable = false)
     private CardStatus status;
 
-    private LocalDateTime createdAt = LocalDateTime.now();
-    private LocalDateTime updatedAt = LocalDateTime.now();
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 
 }

@@ -42,9 +42,9 @@ public class UserMapperImpl implements UserMapper {
                 user.getEmail(),
                 user.getFirstName(),
                 user.getLastName(),
-                user.getPhone(),
                 user.getAuthProvider(),
-                user.getRoles()
+                user.getRoles(),
+                null
         );
     }
 

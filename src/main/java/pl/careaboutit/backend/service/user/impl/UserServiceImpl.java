@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.careaboutit.backend.auth.JwtTokenProvider;
 import pl.careaboutit.backend.dto.LoginRequestDto;
 import pl.careaboutit.backend.dto.user.SignupUserDto;
 import pl.careaboutit.backend.dto.user.UserResponseDto;
@@ -23,6 +24,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Override
     public UserResponseDto addUser(SignupUserDto userDto) {
@@ -67,7 +69,29 @@ public class UserServiceImpl implements UserService {
             throw new BusinessException("Invalid password", HttpStatus.UNAUTHORIZED);
         }
 
-        return userMapper.mapUserToUserResponseDto(user);
+        String token = jwtTokenProvider.generateToken(user.getEmail());
+
+        UserResponseDto userResponseDto = userMapper.mapUserToUserResponseDto(user);
+
+        return new UserResponseDto(
+                userResponseDto.email(),
+                userResponseDto.firstName(),
+                userResponseDto.lastName(),
+                userResponseDto.authProvider(),
+                userResponseDto.roles(),
+                token
+        );
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        userRepository.findByEmail(email)
+                .orElseThrow(() -> new BusinessException(
+                        "User with email: " + email + " not found",
+                        HttpStatus.BAD_REQUEST
+                ));
+
+        return true;
     }
 
 }
