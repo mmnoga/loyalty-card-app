@@ -12,4 +12,6 @@ public interface LoyaltyCardService {
 
     LoyaltyCardResponseDto updateCardPoints(UpdateRequestDto updateRequestDto);
 
+    LoyaltyCardResponseDto getCardDetailsByUserEmail(String userEmail);
+
 }

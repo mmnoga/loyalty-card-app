@@ -3,14 +3,14 @@ package pl.careaboutit.backend.auth;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.security.oauth2.server.resource.introspection.OAuth2IntrospectionAuthenticatedPrincipal;
 import org.springframework.stereotype.Component;
 import pl.careaboutit.backend.service.token.SessionTokenService;
 
-import javax.crypto.spec.SecretKeySpec;
-import java.security.Key;
+import javax.crypto.SecretKey;
 import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
@@ -36,7 +36,7 @@ public class JwtTokenProvider {
         Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
 
         byte[] apiKeySecretBytes = Base64.getDecoder().decode(jwtSecret);
-        Key signingKey = new SecretKeySpec(apiKeySecretBytes, SignatureAlgorithm.HS512.getJcaName());
+        SecretKey signingKey = Keys.hmacShaKeyFor(apiKeySecretBytes);
 
         String token = Jwts.builder()
                 .setSubject(email)
@@ -51,8 +51,11 @@ public class JwtTokenProvider {
     }
 
     public OAuth2AuthenticatedPrincipal parseJwtToken(String token) {
-        Claims claims = Jwts.parser()
-                .setSigningKey(Base64.getDecoder().decode(jwtSecret))
+        SecretKey key = Keys.hmacShaKeyFor(Base64.getDecoder().decode(jwtSecret));
+
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
                 .parseClaimsJws(token)
                 .getBody();
 
@@ -62,5 +65,4 @@ public class JwtTokenProvider {
 
         return new OAuth2IntrospectionAuthenticatedPrincipal(claims.getSubject(), attributes, null);
     }
-
 }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import pl.careaboutit.backend.dto.loyalty.LoyaltyCardResponseDto;
 import pl.careaboutit.backend.dto.loyalty.PointOperation;
 import pl.careaboutit.backend.dto.loyalty.UpdateRequestDto;
+import pl.careaboutit.backend.dto.user.UserResponseDto;
 import pl.careaboutit.backend.exception.BusinessException;
 import pl.careaboutit.backend.mapper.LoyaltyCardMapper;
 import pl.careaboutit.backend.model.CardStatus;
@@ -16,6 +17,7 @@ import pl.careaboutit.backend.repository.LoyaltyCardRepository;
 import pl.careaboutit.backend.repository.LoyaltyPointRepository;
 import pl.careaboutit.backend.repository.UserRepository;
 import pl.careaboutit.backend.service.loyalty.LoyaltyCardService;
+import pl.careaboutit.backend.service.user.UserService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -112,6 +114,33 @@ public class LoyaltyCardServiceImpl implements LoyaltyCardService {
                 cardToUpdate.getCardNumber(),
                 cardToUpdate.getStatus().name(),
                 loyaltyPoint.getPoints()
+        );
+    }
+
+    @Override
+    public LoyaltyCardResponseDto getCardDetailsByUserEmail(String userEmail) {
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new BusinessException(
+                        "User with email " + userEmail + " not found",
+                        HttpStatus.BAD_REQUEST
+                ));
+        LoyaltyCard card =
+                loyaltyCardRepository.findByUser(user)
+                        .orElseThrow(() -> new BusinessException(
+                                "Card for user " + user.getEmail() + " not found",
+                                HttpStatus.BAD_REQUEST
+                        ));
+
+        List<LoyaltyPoint> points = loyaltyPointRepository.findByCard_Id(card.getId());
+
+        int totalPoints = points.stream()
+                .mapToInt(LoyaltyPoint::getPoints)
+                .sum();
+
+        return new LoyaltyCardResponseDto(
+                card.getCardNumber(),
+                card.getStatus().toString(),
+                totalPoints
         );
     }
 

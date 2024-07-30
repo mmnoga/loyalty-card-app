@@ -13,10 +13,16 @@ public class LoyaltyCardController {
 
     private final LoyaltyCardService loyaltyCardService;
 
-    @GetMapping()
+    @GetMapping("/by-number/{cardNumber}")
     public LoyaltyCardResponseDto getCardDetails(
-            @RequestParam String cardNumber) {
+            @PathVariable String cardNumber) {
         return loyaltyCardService.getCardDetails(cardNumber);
+    }
+
+    @GetMapping("/by-email/{email}")
+    public LoyaltyCardResponseDto getCardDetailsByUserEmail(
+            @PathVariable String email) {
+        return loyaltyCardService.getCardDetailsByUserEmail(email);
     }
 
     @PostMapping()

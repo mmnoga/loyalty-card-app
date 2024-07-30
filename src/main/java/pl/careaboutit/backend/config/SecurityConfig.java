@@ -52,9 +52,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/card/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/card/**").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/card/**").permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/card/**").permitAll()
                         .anyRequest().authenticated())
-                .oauth2ResourceServer(customizer -> customizer
-                        .opaqueToken(Customizer.withDefaults()))
+                //.oauth2ResourceServer(customizer -> customizer
+                //        .opaqueToken(Customizer.withDefaults()))
                 .httpBasic(Customizer.withDefaults());
 
         return http.build();

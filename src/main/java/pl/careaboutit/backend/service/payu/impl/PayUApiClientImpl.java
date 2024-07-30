@@ -9,8 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+import pl.careaboutit.backend.dto.payu.OrderCreatedResponseDto;
+import pl.careaboutit.backend.dto.payu.OrderDetailsResponseDto;
 import pl.careaboutit.backend.dto.payu.OrderRequestDto;
-import pl.careaboutit.backend.dto.payu.OrderResponseDto;
 import pl.careaboutit.backend.dto.payu.PaymentMethodResponseDto;
 import pl.careaboutit.backend.service.payu.PayUApiClient;
 
@@ -48,7 +49,7 @@ public class PayUApiClientImpl implements PayUApiClient {
     }
 
     @Override
-    public OrderResponseDto submitOrder(OrderRequestDto order) {
+    public OrderCreatedResponseDto submitOrder(OrderRequestDto order) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
 
@@ -61,11 +62,33 @@ public class PayUApiClientImpl implements PayUApiClient {
         HttpEntity<OrderRequestDto> request =
                 new HttpEntity<>(order, headers);
 
-        ResponseEntity<OrderResponseDto> responseEntity = restTemplate.exchange(
+        ResponseEntity<OrderCreatedResponseDto> responseEntity = restTemplate.exchange(
                 submitOrderUrl,
                 HttpMethod.POST,
                 request,
-                OrderResponseDto.class);
+                OrderCreatedResponseDto.class);
+
+        return responseEntity.getBody();
+    }
+
+    @Override
+    public OrderDetailsResponseDto getOrderStatus(String orderId) {
+        String orderDetailsUrl = UriComponentsBuilder
+                .fromUriString(BASE_URL)
+                .path(ORDER_CREATE_URL + "/{orderId}")
+                .buildAndExpand(orderId)
+                .toUriString();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-Type", "application/json");
+
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+
+        ResponseEntity<OrderDetailsResponseDto> responseEntity = restTemplate.exchange(
+                orderDetailsUrl,
+                HttpMethod.GET,
+                request,
+                OrderDetailsResponseDto.class);
 
         return responseEntity.getBody();
     }
