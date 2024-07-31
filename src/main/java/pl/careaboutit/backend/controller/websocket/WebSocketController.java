@@ -18,7 +18,10 @@ public class WebSocketController {
             ChatMessage message) {
         log.info(message.toString());
 
-        return new ChatMessage(message.getMessage(), message.getUser());
+        return new ChatMessage(
+                message.getMessage(),
+                message.getUser(),
+                message.getIdUser());
     }
 
 }
